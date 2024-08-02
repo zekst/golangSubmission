@@ -10,9 +10,6 @@ import WelcomePage from './pages/WelcomePage';
 
 function App() {
 
-    
-
-    
     const [ID, setID] = useState('');
 
     useEffect(() => {
@@ -25,9 +22,13 @@ function App() {
                 });
 
                 const content = await response.json();
+                if(content.message==="unauthenticated"){
+                    setID('');
+                }else{
+                    setID(content.info.id);
+                }
+                
 
-                console.log(JSON.stringify(content));
-                setID(content.info.id);
             }
         )();
     });
@@ -42,7 +43,7 @@ function App() {
                     <Route path="/" exact component={Home}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>
-                    <Route path="/welcomPage" component={WelcomePage}/>
+                    <Route path="/WelcomePage" component={WelcomePage}/>
                 </main>
             </BrowserRouter>
         </div>

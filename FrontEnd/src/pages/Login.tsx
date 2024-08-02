@@ -8,9 +8,6 @@ const Login =()=> {
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
-
-  
-
     const [data, setData] = useState({})
 
     const submit = async (e: SyntheticEvent) => {
@@ -26,48 +23,30 @@ const Login =()=> {
             })
         });
 
-      
-
         const content = await response.json();
-
-
         setData(content.info)
 
-        console.log(data)
-
-        console.log(typeof content)
-
         if(content.message==="success"){
-            console.log('redirected to welcome page');
             setRedirect(true);
         }else if(content.message.id === 0){
-            console.log("user not found");
             setLoginFailed(true)
         }
-        
-       
-        // props.setRole(content.role);
-        // props.setPermissions(content.permissions);
-        // props.setDepartment(content.department)
-
     }
 
     if (redirect) {
-        console.log('going to welcomePage', data);
-       return <WelcomePage data={data} /> ; // changes made on 31st of july
+       
+       return <WelcomePage data={data} /> ;
     }
     if(loginFailed){
         return <Redirect to="/Register"/>
     }
     
-
     return (
         <form onSubmit={submit}>
             <h1 className="h3 mb-3 fw-normal">Login</h1>
             <input type="email" className="form-control" placeholder="Email address" required
                    onChange={e => setEmail(e.target.value)}
             />
-
             <input type="password" className="form-control" placeholder="Password" required
                    onChange={e => setPassword(e.target.value)}
             />

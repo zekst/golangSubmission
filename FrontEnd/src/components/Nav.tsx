@@ -1,4 +1,3 @@
-import React from 'react';
 import {Link} from "react-router-dom";
 
 
@@ -8,16 +7,11 @@ const Nav = (props: { ID: string, setID: (name: string) => void }) => {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
-        });
-
-        
+        });        
     }
 
     let menu;
 
-    console.log('name of somthing',props.ID);
-
- 
         menu = (
             <ul className="navbar-nav me-auto mb-2 mb-md-0">
                 <li className="nav-item active">
