@@ -1,4 +1,4 @@
-module someName
+module Module
 
 go 1.22.4
 

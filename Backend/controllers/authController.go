@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	"Module/database"
+	"Module/models"
 	"fmt"
-	"someName/database"
-	"someName/models"
 	"strconv"
 	"strings"
 	"time"
@@ -19,7 +19,6 @@ var roles = []string{"sales", "accountant", "hr", "admin"}
 
 func assignPermissions(role string) []string {
 	var permissions []string
-
 	role = strings.ToLower(strings.TrimSpace(role))
 
 	if role == roles[0] || role == roles[2] || role == roles[3] {
@@ -32,23 +31,21 @@ func assignPermissions(role string) []string {
 }
 
 func assignDepartments(role string) []string {
-
-	var department []string
-
+	var departments []string
 	role = strings.ToLower(strings.TrimSpace(role))
 
 	switch role {
 	case roles[0]:
-		department = append(department, "Customer Management", "Billing Management")
+		departments = append(departments, "Customer Management", "Billing Management")
 	case roles[1]:
-		department = append(department, "Payroll Management", "Billing Management")
+		departments = append(departments, "Payroll Management", "Billing Management")
 	case roles[2]:
-		department = append(department, "Payroll Management")
+		departments = append(departments, "Payroll Management")
 	case roles[3]:
-		department = append(department, "User Management")
+		departments = append(departments, "User Management")
 	}
 
-	return department
+	return departments
 }
 
 func Register(c *fiber.Ctx) error {
@@ -59,13 +56,13 @@ func Register(c *fiber.Ctx) error {
 	}
 
 	if data["email"] == "" || data["password"] == "" || data["role"] == "" {
-		return c.JSON("required fields can not be empty")
+		return c.JSON("Required fields can not be empty")
 	}
 
 	password, error := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
 
 	if error != nil {
-		return c.JSON(fmt.Sprintf("something wrong while encrypting the passowrd %s", error))
+		return c.JSON(fmt.Sprintf("something wrong happenened while encrypting the passowrd %s", error))
 	}
 
 	user := models.User{
@@ -73,7 +70,7 @@ func Register(c *fiber.Ctx) error {
 		Email:       data["email"],
 		Password:    password,
 		Role:        data["role"],
-		Permissions:  assignPermissions(data["role"]),
+		Permissions: assignPermissions(data["role"]),
 		Departments: assignDepartments(data["role"]),
 	}
 
@@ -117,7 +114,7 @@ func Login(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
-			"message": "could not login",
+			"message": "failed to login",
 		})
 	}
 

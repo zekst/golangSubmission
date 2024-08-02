@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"someName/models"
+	"Module/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
